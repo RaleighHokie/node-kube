@@ -16,17 +16,17 @@ steps:
 - task: HelmDeploy@0
   inputs:
     command: init
+    azureSubscription: 'node-kube'
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
-    azureSubscription: 'node-kube'
 
 - task: HelmDeploy@0
   inputs:
     command: package
     chartPath: 'charts/sampleapp'
+    azureSubscription: 'node-kube'
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
-    azureSubscription: 'node-kube'
 
 - task: HelmDeploy@0
   inputs:
@@ -35,6 +35,6 @@ steps:
     chartType: FilePath
     chartPath: '$(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz'
     arguments: '--set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(build.buildid)'
+    azureSubscription: 'node-kube'
     kubernetesCluster: adopnodekube    
     azureResourceGroup: adopnodekube8b6b
-    azureSubscription: 'node-kube'
