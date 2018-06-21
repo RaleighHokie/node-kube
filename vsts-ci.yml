@@ -12,7 +12,7 @@ steps:
   inputs:
     action: 'Push an image'
     imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(Build.BuildId)'
-    azureSubscription: 'adopnodekube - Service Endpoint'
+    azureSubscription: 'node-kube'
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
   #enabled: false
 
@@ -28,7 +28,7 @@ steps:
     #arguments: '--client-only'
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
-    azureSubscription: 'adopnodekube - Service Endpoint'
+    azureSubscription: 'node-kube'
 
 - task: HelmDeploy@0
   displayName: helm package
@@ -37,15 +37,15 @@ steps:
     chartPath: 'charts/sampleapp'
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
-    azureSubscription: 'adopnodekube - Service Endpoint'
+    azureSubscription: 'node-kube'
     #save: false
 
 - task: HelmDeploy@0
   displayName: helm delete
   inputs:
-    azureSubscription: 'adopnodekube - Service Endpoint'
-    azureResourceGroup: adopnodekube8b6b
     kubernetesCluster: adopnodekube
+    azureResourceGroup: adopnodekube8b6b
+    azureSubscription: 'node-kube'
     command: delete
     arguments: '--purge azuredevops'
   enabled: false
@@ -57,8 +57,8 @@ steps:
     #namespace: dev
     releaseName: azuredevops
     chartType: FilePath
-    chartPath: '$(Build.ArtifactStagingDirectory)/sampleapp-v0.2.0.tgz'
+    chartPath: '$(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz'
     arguments: '--set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(Build.BuildId)'
     kubernetesCluster: adopnodekube    
     azureResourceGroup: adopnodekube8b6b
-    azureSubscription: 'adopnodekube - Service Endpoint'
+    azureSubscription: 'node-kube'
