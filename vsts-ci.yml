@@ -9,32 +9,32 @@ steps:
 - task: Docker@0
   inputs:
     action: 'Push an image'
-    imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)'
-    azureSubscription: 'node-kube'
+    azureSubscription: node-kube
+    imageName: adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
 
 - task: HelmDeploy@0
   inputs:
     command: init
-    azureSubscription: 'node-kube'
+    azureSubscription: node-kube
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
 
 - task: HelmDeploy@0
   inputs:
     command: package
-    chartPath: 'charts/sampleapp'
-    azureSubscription: 'node-kube'
+    chartPath: charts/sampleapp
+    azureSubscription: node-kube
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
 
 - task: HelmDeploy@0
   inputs:
     command: upgrade
-    releaseName: azuredevops
     chartType: FilePath
-    chartPath: '$(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz'
-    arguments: '--set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(build.buildid)'
-    azureSubscription: 'node-kube'
+    releaseName: azuredevops
+    azureSubscription: node-kube
     kubernetesCluster: adopnodekube    
     azureResourceGroup: adopnodekube8b6b
+    chartPath: $(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz
+    arguments: --set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(build.buildid)
