@@ -1,4 +1,3 @@
-# https://aka.ms/yaml
 queue: 'Hosted Linux Preview'
 steps:
 
@@ -6,59 +5,36 @@ steps:
   inputs:
     action: 'Build an image'
     imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(Build.BuildId)'
-  #enabled: false
 
 - task: Docker@0
   inputs:
     action: 'Push an image'
-    imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(Build.BuildId)'
+    imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)'
     azureSubscription: 'node-kube'
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
-  #enabled: false
 
-- task: HelmInstaller@0
-  inputs:
-    checkLatestKubectl: false
-  enabled: false
-  
 - task: HelmDeploy@0
-  displayName: helm init
   inputs:
     command: init
-    #arguments: '--client-only'
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
     azureSubscription: 'node-kube'
 
 - task: HelmDeploy@0
-  displayName: helm package
   inputs:
     command: package
     chartPath: 'charts/sampleapp'
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
     azureSubscription: 'node-kube'
-    #save: false
 
 - task: HelmDeploy@0
-  displayName: helm delete
-  inputs:
-    kubernetesCluster: adopnodekube
-    azureResourceGroup: adopnodekube8b6b
-    azureSubscription: 'node-kube'
-    command: delete
-    arguments: '--purge azuredevops'
-  enabled: false
-
-- task: HelmDeploy@0
-  displayName: helm upgrade
   inputs:
     command: upgrade
-    #namespace: dev
-    releaseName: azuredevops
+    #releaseName: azuredevops
     chartType: FilePath
     chartPath: '$(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz'
-    arguments: '--set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(Build.BuildId)'
+    arguments: '--set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(build.buildid)'
     kubernetesCluster: adopnodekube    
     azureResourceGroup: adopnodekube8b6b
     azureSubscription: 'node-kube'
