@@ -14,3 +14,4 @@ steps:
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
 
     
+    
