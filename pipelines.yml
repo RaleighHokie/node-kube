@@ -19,6 +19,7 @@ steps:
     azureSubscription: node-kube
     kubernetesCluster: adopnodekube
     azureResourceGroup: adopnodekube8b6b
+  enabled: false
 
 - task: HelmDeploy@0
   inputs:
@@ -38,4 +39,3 @@ steps:
     azureResourceGroup: adopnodekube8b6b
     chartPath: $(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz
     arguments: --set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(build.buildid)
-    
