@@ -27,7 +27,7 @@ steps:
 - script: mkdir -p /root/.helm/repository/local
 - task: HelmDeploy@0
   inputs:
-    #save: false
+    save: false
     command: package
     chartPath: charts/sampleapp
     azureSubscription: node-kube
