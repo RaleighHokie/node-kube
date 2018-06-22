@@ -15,7 +15,7 @@ steps:
 
 - script: |
     helm init --client-only
-    helm package --save --destination $(build.artifactsstagingdirectory) charts/sampleapp
+    helm package --save --destination $(build.artifactstagingdirectory) charts/sampleapp
 
 - task: HelmDeploy@0
   inputs:
