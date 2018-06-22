@@ -4,7 +4,7 @@ steps:
 - task: Docker@0
   inputs:
     action: 'Build an image'
-    imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(Build.BuildId)'
+    imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)'
 
 - task: Docker@0
   inputs:
@@ -13,16 +13,9 @@ steps:
     imageName: adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
 
-- script: helm init --client-only
-  displayName: Helm init
-
-- task: HelmDeploy@0
-  inputs:
-    command: package
-    chartPath: charts/sampleapp
-    azureSubscription: node-kube
-    kubernetesCluster: adopnodekube
-    azureResourceGroup: adopnodekube8b6b
+- script: |
+    helm init --client-only
+    helm package --save --destination $(build.artifactsstagingdirectory) charts/sampleapp
 
 - task: HelmDeploy@0
   inputs:
