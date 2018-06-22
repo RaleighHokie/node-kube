@@ -5,6 +5,7 @@ steps:
   inputs:
     action: 'Build an image'
     imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(Build.BuildId)'
+  enabled: false
 
 - task: Docker@0
   inputs:
@@ -12,6 +13,7 @@ steps:
     azureSubscription: node-kube
     imageName: adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
+  enabled: false
 
 - task: HelmDeploy@0
   inputs:
