@@ -15,18 +15,9 @@ steps:
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
   enabled: false
 
-- task: HelmDeploy@0
-  inputs:
-    command: init
-    azureSubscription: node-kube
-    kubernetesCluster: adopnodekube
-    azureResourceGroup: adopnodekube8b6b
-  enabled: false
-
 - script: helm init --client-only
 - task: HelmDeploy@0
   inputs:
-    save: false
     command: package
     chartPath: charts/sampleapp
     azureSubscription: node-kube
