@@ -5,6 +5,7 @@ steps:
   inputs:
     action: 'Build an image'
     imageName: 'adopnodekubeb7b0.azurecr.io/adopnodekube:$(Build.BuildId)'
+  enabled: false
 
 - task: Docker@0
   inputs:
@@ -12,14 +13,9 @@ steps:
     azureSubscription: node-kube
     imageName: adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
+  enabled: false
 
-- task: HelmDeploy@0
-  inputs:
-    command: init
-    azureSubscription: node-kube
-    kubernetesCluster: adopnodekube
-    azureResourceGroup: adopnodekube8b6b
-
+- script: helm init --client-only
 - task: HelmDeploy@0
   inputs:
     command: package
@@ -38,4 +34,3 @@ steps:
     azureResourceGroup: adopnodekube8b6b
     chartPath: $(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz
     arguments: --set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(build.buildid)
-    
