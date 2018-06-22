@@ -23,6 +23,7 @@ steps:
 
 - task: HelmDeploy@0
   inputs:
+    save: false
     command: package
     chartPath: charts/sampleapp
     azureSubscription: node-kube
