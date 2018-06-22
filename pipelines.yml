@@ -13,17 +13,3 @@ steps:
     imageName: adopnodekubeb7b0.azurecr.io/adopnodekube:$(build.buildid)
     azureContainerRegistry: '{"loginServer":"adopnodekubeb7b0.azurecr.io"}'
 
-- script: |
-    helm init --client-only
-    helm package --save --destination $(build.artifactstagingdirectory) charts/sampleapp
-
-- task: HelmDeploy@0
-  inputs:
-    command: upgrade
-    chartType: FilePath
-    releaseName: azuredevops
-    azureSubscription: node-kube
-    kubernetesCluster: adopnodekube    
-    azureResourceGroup: adopnodekube8b6b
-    chartPath: $(build.artifactstagingdirectory)/sampleapp-v0.2.0.tgz
-    arguments: --set image.repository=adopnodekubeb7b0.azurecr.io/adopnodekube --set image.tag=$(build.buildid)
